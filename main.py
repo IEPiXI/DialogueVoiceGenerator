@@ -6,9 +6,9 @@ def main():
                             user_message = "Who won the world series in 2020?", 
                             assistant_message = "The Los Angeles Dodgers won the World Series in 2020."
                         )
-                        
+
     assistant.get_api_key()
-    answer = assistant.send_message("Hey how are you?")
+    answer = assistant.send_message("How much is the fish?")
     print(answer)
 
 if __name__ == "__main__":

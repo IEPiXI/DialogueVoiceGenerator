@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 
 # Assistant Class for ChatGPT API
-# https://docs.python.org/3/tutorial/classes.html
+# https://platform.openai.com/docs/guides/chat/introduction
 
 class Assistant():
 
