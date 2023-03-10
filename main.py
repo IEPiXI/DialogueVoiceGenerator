@@ -1,5 +1,5 @@
 from chatgpt import Assistant
-
+from elevenlabs import ElevenLabHelper
 
 def main():
     assistant = Assistant(  system_message = "You are a helpful assistant.", 
@@ -11,6 +11,10 @@ def main():
     answer = assistant.send_message("How much is the fish?")
     print(answer)
 
+def main2():
+    elevenlab = ElevenLabHelper()
+    elevenlab.example()
+
 if __name__ == "__main__":
-    main()
+    main2()
 

@@ -2,7 +2,7 @@ from elevenlabslib import *
 from dotenv import load_dotenv
 import os
 
-class EvenLabHelper():
+class ElevenLabHelper():
 
     def __init__(self):
         load_dotenv()
