@@ -6,7 +6,7 @@ class ElevenLabHelper():
 
     def __init__(self):
         load_dotenv()
-        self.api_key = os.environ.get("api-key")
+        self.api_key = os.environ.get("api-key-elevenlabs")
         self.user = ElevenLabsUser(self.api_key)
 
     def example(self):
@@ -14,9 +14,3 @@ class ElevenLabHelper():
         voice.play_preview(playInBackground=False)
 
         voice.generate_and_play_audio("Test.", playInBackground=False)
-
-        for historyItem in user.get_history_items():
-            if historyItem.text == "Test.":
-                # The first items are the newest, so we can stop as soon as we find one.
-                historyItem.delete()
-                break

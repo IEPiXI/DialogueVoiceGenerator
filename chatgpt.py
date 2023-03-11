@@ -19,7 +19,7 @@ class Assistant():
 
     def get_api_key(self):
         load_dotenv()
-        self.api_key = os.environ.get("api-key")
+        self.api_key = os.environ.get("api-key-openai")
     
     def send_message(self, input_message):
 
