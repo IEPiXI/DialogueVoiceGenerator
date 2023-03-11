@@ -14,6 +14,8 @@ def main():
                                               that doesn't relate to a person talking. """)
     print(answer)
 
+def generate_audios_from_text():
+    pass
 
 def mein():
     elevenlab = ElevenLabHelper()

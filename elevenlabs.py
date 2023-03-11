@@ -11,7 +11,6 @@ class ElevenLabHelper():
 
     def generate_audio(self, path, file_name, text, voice):
         voice = self.user.get_voices_by_name(voice)[0]  # This is a list because multiple voices can have the same name
-        voice.play_preview(playInBackground=False)
         mp3Data = voice.generate_audio_bytes(text)
         
         if not os.path.exists(path):
