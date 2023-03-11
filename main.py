@@ -1,7 +1,10 @@
 from chatgpt import Assistant
 from elevenlabs import ElevenLabHelper
 
+PATH_TO_AUDIOS = "single_audio/"
+
 def main():
+    elevenlab = ElevenLabHelper()
     assistant = Assistant(  system_message = "You provide trialogues between three people."
                          )
 
@@ -11,10 +14,8 @@ def main():
                                               that doesn't relate to a person talking. """)
     print(answer)
 
-def main2():
-    elevenlab = ElevenLabHelper()
-    elevenlab.example()
 
 if __name__ == "__main__":
     main()
+
 
