@@ -1,8 +1,12 @@
 from time import sleep
 from chatgpt import Assistant
 from elevenlabs import ElevenLabHelper
+from moviepy.editor import *
+from ytdownloader import YTDownloader
+
 import wave
 import os
+
 PATH_AUDIOS = "single_audio/"
 
 PATH_SYSTEM_MESSAGE = "example/system_message.txt"
@@ -64,6 +68,7 @@ class Main():
         output.close()
 
 if __name__ == "__main__":
-    main = Main()
+    #main = Main()
     #main.generate_audios_from_text()
-    main.merge_audios()
+    #main.merge_audios()
+    ytdownloader = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ")
