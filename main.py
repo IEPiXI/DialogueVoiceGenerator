@@ -1,7 +1,8 @@
 from time import sleep
 from chatgpt import Assistant
 from elevenlabs import ElevenLabHelper
-
+import wave
+import os
 PATH_AUDIOS = "single_audio/"
 
 PATH_SYSTEM_MESSAGE = "example/system_message.txt"
@@ -44,7 +45,24 @@ class Main():
                 sleep(1)
                 count += 1 
 
+    def merge_audios(self):
+        infiles =  sorted([PATH_AUDIOS+f for f in os.listdir(PATH_AUDIOS)])
+        print(infiles)
+        outfile = "sounds.wav"
+
+        data= []
+        for infile in infiles:
+            w = wave.open(infile, 'rb')
+            data.append( [w.getparams(), w.readframes(w.getnframes())] )
+            w.close()
+            
+        output = wave.open(outfile, 'wb')
+        output.setparams(data[0][0])
+        for i in range(len(data)):
+            output.writeframes(data[i][1])
+        output.close()
+
 if __name__ == "__main__":
     main = Main()
-    main.generate_audios_from_text()
-
+    #main.generate_audios_from_text()
+    main.merge_audios()
