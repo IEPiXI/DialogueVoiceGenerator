@@ -41,7 +41,8 @@ class Main():
         for item in dialogue_arr:
             if not item == '':
                 name, sentence = item.split(":")
-                self.elevenlab.generate_audio(PATH_AUDIOS, str(count) + "_" + name, sentence, name)
+                temp_count = str(count) if count > 9 else str(0) + str(count)
+                self.elevenlab.generate_audio(PATH_AUDIOS, temp_count + "_" + name, sentence, name)
                 sleep(1)
                 count += 1 
 
