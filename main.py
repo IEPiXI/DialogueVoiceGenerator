@@ -6,6 +6,7 @@ from ytdownloader import YTDownloader
 
 import wave
 import os
+import contextlib
 
 PATH_AUDIOS = "single_audio/"
 
@@ -18,7 +19,7 @@ class Main():
 
 
     def __init__(self):
-
+        self.list_talk_duration = []
         self.elevenlab = ElevenLabHelper()
 
         self.system_message = self.load_message(PATH_SYSTEM_MESSAGE)
@@ -46,7 +47,9 @@ class Main():
             if not item == '':
                 name, sentence = item.split(":")
                 temp_count = str(count) if count > 9 else str(0) + str(count)
-                self.elevenlab.generate_audio(PATH_AUDIOS, temp_count + "_" + name, sentence, name)
+                filename = temp_count + "_" + name
+                self.elevenlab.generate_audio(PATH_AUDIOS, filename, sentence, name)
+                self.list_talk_duration.append((name, self.get_wav_length(PATH_AUDIOS + filename)))
                 sleep(1)
                 count += 1 
 
@@ -55,20 +58,26 @@ class Main():
         print(infiles)
         outfile = "sounds.wav"
 
-        data= []
+        data = []
         for infile in infiles:
             w = wave.open(infile, 'rb')
             data.append( [w.getparams(), w.readframes(w.getnframes())] )
             w.close()
-            
+
         output = wave.open(outfile, 'wb')
         output.setparams(data[0][0])
         for i in range(len(data)):
             output.writeframes(data[i][1])
         output.close()
+        print(self.list_talk_duration)
 
+    def get_wav_length(self, fname):
+        with contextlib.closing(wave.open(fname,'r')) as f:
+            frames = f.getnframes()
+            rate = f.getframerate()
+            return frames / float(rate)
+    
 if __name__ == "__main__":
-    #main = Main()
+    main = Main()
     #main.generate_audios_from_text()
-    #main.merge_audios()
-    ytdownloader = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ")
+    main.merge_audios()
