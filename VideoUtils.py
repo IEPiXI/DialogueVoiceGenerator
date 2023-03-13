@@ -1,4 +1,5 @@
 import pytube
+import os
 from moviepy.editor import *
 
 class YTDownloader():
@@ -15,7 +16,8 @@ class YTDownloader():
         return filtered_stream
     
     def download(self):
-        self.filtered_stream.download(filename=self.filename)
+        if not os.path.exists(self.filename):
+            self.filtered_stream.download(filename=self.filename)
 
 class VideoEditHelper():
 

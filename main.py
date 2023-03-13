@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
     # ---------- Dowload Background Video ----------
     yt_D = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ", "1080p")
-    #yt_D.download()
+    yt_D.download()
 
     # ---------- Edit Video ----------
     videoEditHelper = VideoEditHelper()
