@@ -7,6 +7,7 @@ import contextlib
 import wave
 import os
 
+
 PATH_AUDIOS = "single_audio/"
 
 PATH_SYSTEM_MESSAGE = "example/system_message.txt"
@@ -63,6 +64,11 @@ class Main():
         for infile in infiles:
             w = wave.open(infile, 'rb')
             data.append( [w.getparams(), w.readframes(w.getnframes())] )
+
+            #TODO REMOVE JUST FOR TESTING PURPOSES
+            name = infile.split("_")[-1].split(".")[0]
+            self.list_talk_duration.append((name, self.get_wav_length(infile)))
+
             w.close()
             
         output = wave.open(filename, 'wb')
@@ -81,7 +87,8 @@ if __name__ == "__main__":
     # ---------- Generate Audios ----------
     main = Main()
     #main.generate_audios_from_text(PATH_OUTPUTS, PATH_AUDIOS)
-    #main.merge_audios(PATH_AUDIOS, FILENAME_AUDIO)
+    main.merge_audios(PATH_AUDIOS, FILENAME_AUDIO)
+    print(main.list_talk_duration)
 
     # ---------- Dowload Background Video ----------
     yt_D = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ", "1080p")
@@ -89,6 +96,7 @@ if __name__ == "__main__":
 
     # ---------- Edit Video ----------
     videoEditHelper = VideoEditHelper()
-    #videoEditHelper.cut_video(yt_D.filename, VIDEO_NAME, yt_D.fps, 0, main.get_wav_length(FILENAME_AUDIO))
-    videoEditHelper.set_audio(FILENAME_AUDIO, VIDEO_NAME)
+    #videoEditHelper.cut_video(yt_D.filename, VIDEO_NAME, 0, main.get_wav_length(FILENAME_AUDIO))
+    #videoEditHelper.set_audio(FILENAME_AUDIO, VIDEO_NAME, "final_video.mp4")
+    videoEditHelper.finalize_video("images/",main.list_talk_duration,FILENAME_AUDIO, VIDEO_NAME, "final_video.mp4")
     
