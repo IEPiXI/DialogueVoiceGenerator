@@ -7,7 +7,7 @@ class YTDownloader():
         self.video_streams = pytube.YouTube(url).streams
         self.resolution = resolution
         self.filtered_stream = self.filter_stream()
-        self.title = "".join(x for x in self.filtered_stream.title if x.isalnum())
+        self.filename = "".join(x for x in self.filtered_stream.title if x.isalnum()) + ".mp4"
         self.fps = self.filtered_stream.fps
 
     def filter_stream(self):
@@ -15,10 +15,15 @@ class YTDownloader():
         return filtered_stream
     
     def download(self):
-        self.filtered_stream.download(filename=self.title+".mp4")
+        self.filtered_stream.download(filename=self.filename)
 
 class VideoEditHelper():
 
-    def cut_video(self,title,fps,start,end):
-        video = VideoFileClip(f"{title}.mp4").subclip(start,end)
-        video.write_videofile(f"{title}_cut.mp4",fps=fps)
+    def cut_video(self, old_filename, new_filename, fps, start, end):
+        video = VideoFileClip(old_filename).subclip(start, end)
+        video.write_videofile(new_filename, fps=fps)
+
+    def set_audio(self, audio_clip_title, video_clip_title):
+        videoclip = VideoFileClip(video_clip_title)
+        audioclip = AudioFileClip(audio_clip_title)
+        videoclip.set_audio(audioclip)

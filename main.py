@@ -14,6 +14,9 @@ PATH_USER_MESSAGE = "example/user_message.txt"
 PATH_ASSISTANT_MESSAGE = "example/assistant_message.txt"
 
 PATH_OUTPUTS = "outputs/out.txt"
+
+FILENAME_AUDIO = "sounds.wav"
+VIDEO_NAME = "video.mp4"
 class Main():
 
 
@@ -40,23 +43,21 @@ class Main():
         with open(path, "r") as text_file:
             return "".join(text_file.readlines())
 
-    def generate_audios_from_text(self):
+    def generate_audios_from_text(self, path_outputs, path_audios):
         count = 0
-        dialogue_arr = self.load_message(PATH_OUTPUTS).split("\n")
+        dialogue_arr = self.load_message(path_outputs).split("\n")
         for item in dialogue_arr:
             if not item == '':
                 name, sentence = item.split(":")
                 temp_count = str(count) if count > 9 else str(0) + str(count)
                 filename = temp_count + "_" + name
-                self.elevenlab.generate_audio(PATH_AUDIOS, filename, sentence, name)
-                self.list_talk_duration.append((name, self.get_wav_length(PATH_AUDIOS + filename)))
+                self.elevenlab.generate_audio(path_audios, filename, sentence, name)
+                self.list_talk_duration.append((name, self.get_wav_length(path_audios + filename)))
                 sleep(1)
                 count += 1 
 
-    def merge_audios(self):
-        infiles =  sorted([PATH_AUDIOS+f for f in os.listdir(PATH_AUDIOS)])
-        print(infiles)
-        outfile = "sounds.wav"
+    def merge_audios(self, path, filename):
+        infiles =  sorted([path + f for f in os.listdir(path)])
 
         data = []
         for infile in infiles:
@@ -64,7 +65,7 @@ class Main():
             data.append( [w.getparams(), w.readframes(w.getnframes())] )
             w.close()
             
-        output = wave.open(outfile, 'wb')
+        output = wave.open(filename, 'wb')
         output.setparams(data[0][0])
         for i in range(len(data)):
             output.writeframes(data[i][1])
@@ -78,15 +79,16 @@ class Main():
         
 if __name__ == "__main__":
     # ---------- Generate Audios ----------
-    #main = Main()
-    #main.generate_audios_from_text()
-    #main.merge_audios()
+    main = Main()
+    #main.generate_audios_from_text(PATH_OUTPUTS, PATH_AUDIOS)
+    #main.merge_audios(PATH_AUDIOS, FILENAME_AUDIO)
 
     # ---------- Dowload Background Video ----------
     yt_D = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ", "1080p")
-    #ytdownloader.download()
+    #yt_D.download()
 
     # ---------- Edit Video ----------
     videoEditHelper = VideoEditHelper()
-    videoEditHelper.cut_video(yt_D.title, yt_D.fps, 0, 120)
+    videoEditHelper.cut_video(yt_D.filename, VIDEO_NAME, yt_D.fps, 0, main.get_wav_length(FILENAME_AUDIO))
 
+    
