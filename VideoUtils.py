@@ -28,4 +28,6 @@ class VideoEditHelper():
     def set_audio(self, audio_clip_title, video_clip_title):
         videoclip = VideoFileClip(video_clip_title)
         audioclip = AudioFileClip(audio_clip_title)
-        videoclip.set_audio(audioclip)
+        
+        new_videoclip = videoclip.set_audio(audioclip)
+        new_videoclip.write_videofile(video_clip_title)

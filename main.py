@@ -89,6 +89,6 @@ if __name__ == "__main__":
 
     # ---------- Edit Video ----------
     videoEditHelper = VideoEditHelper()
-    videoEditHelper.cut_video(yt_D.filename, VIDEO_NAME, yt_D.fps, 0, main.get_wav_length(FILENAME_AUDIO))
-
+    #videoEditHelper.cut_video(yt_D.filename, VIDEO_NAME, yt_D.fps, 0, main.get_wav_length(FILENAME_AUDIO))
+    videoEditHelper.set_audio(FILENAME_AUDIO, VIDEO_NAME)
     
