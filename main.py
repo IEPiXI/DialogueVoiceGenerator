@@ -2,6 +2,8 @@ from time import sleep
 from chatgpt import Assistant
 from elevenlabs import ElevenLabHelper
 from VideoUtils import YTDownloader, VideoEditHelper
+
+import contextlib
 import wave
 import os
 
@@ -17,6 +19,7 @@ class Main():
 
     def __init__(self):
 
+        self.list_talk_duration = []
         self.elevenlab = ElevenLabHelper()
 
         self.system_message = self.load_message(PATH_SYSTEM_MESSAGE)
@@ -44,7 +47,9 @@ class Main():
             if not item == '':
                 name, sentence = item.split(":")
                 temp_count = str(count) if count > 9 else str(0) + str(count)
-                self.elevenlab.generate_audio(PATH_AUDIOS, temp_count + "_" + name, sentence, name)
+                filename = temp_count + "_" + name
+                self.elevenlab.generate_audio(PATH_AUDIOS, filename, sentence, name)
+                self.list_talk_duration.append((name, self.get_wav_length(PATH_AUDIOS + filename)))
                 sleep(1)
                 count += 1 
 
@@ -53,7 +58,7 @@ class Main():
         print(infiles)
         outfile = "sounds.wav"
 
-        data= []
+        data = []
         for infile in infiles:
             w = wave.open(infile, 'rb')
             data.append( [w.getparams(), w.readframes(w.getnframes())] )
@@ -65,6 +70,12 @@ class Main():
             output.writeframes(data[i][1])
         output.close()
 
+    def get_wav_length(self, fname):
+        with contextlib.closing(wave.open(fname,'r')) as f:
+            frames = f.getnframes()
+            rate = f.getframerate()
+            return frames / float(rate)
+        
 if __name__ == "__main__":
     # ---------- Generate Audios ----------
     #main = Main()
@@ -72,8 +83,10 @@ if __name__ == "__main__":
     #main.merge_audios()
 
     # ---------- Dowload Background Video ----------
-    videoEditHelper = VideoEditHelper()
-    yt_D = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ","1080p")
+    yt_D = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ", "1080p")
     #ytdownloader.download()
-    videoEditHelper.cut_video(yt_D.title,yt_D.fps,0,120)
+
+    # ---------- Edit Video ----------
+    videoEditHelper = VideoEditHelper()
+    videoEditHelper.cut_video(yt_D.title, yt_D.fps, 0, 120)
 
