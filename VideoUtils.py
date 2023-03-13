@@ -36,9 +36,11 @@ class VideoEditHelper():
             name, time = _tuple
             image = images_path + name + ".png"
             image_width, image_height = imagesize.get(image)
-            xpos=0.3
-            if name == "Trump":
-                xpos=0.6
+            xpos=0.2
+            if name == "Obama":
+                xpos=0.5
+            elif name == "Trump":
+                xpos=0.8
             final_video_array.append(ImageClip(image).set_start(time_stamp).set_duration(time).set_pos(((xpos*video_width)-(image_width/2),video_height-image_height)))
             time_stamp += time
         	
