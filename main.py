@@ -1,9 +1,7 @@
 from time import sleep
 from chatgpt import Assistant
 from elevenlabs import ElevenLabHelper
-from moviepy.editor import *
-from ytdownloader import YTDownloader
-
+from VideoUtils import YTDownloader, VideoEditHelper
 import wave
 import os
 
@@ -68,7 +66,14 @@ class Main():
         output.close()
 
 if __name__ == "__main__":
+    # ---------- Generate Audios ----------
     #main = Main()
     #main.generate_audios_from_text()
     #main.merge_audios()
-    ytdownloader = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ")
+
+    # ---------- Dowload Background Video ----------
+    videoEditHelper = VideoEditHelper()
+    yt_D = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ","1080p")
+    #ytdownloader.download()
+    videoEditHelper.cut_video(yt_D.title,yt_D.fps,0,120)
+
