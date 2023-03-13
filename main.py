@@ -7,7 +7,6 @@ import contextlib
 import wave
 import os
 
-
 PATH_AUDIOS = "single_audio/"
 
 PATH_SYSTEM_MESSAGE = "example/system_message.txt"
@@ -15,9 +14,12 @@ PATH_USER_MESSAGE = "example/user_message.txt"
 PATH_ASSISTANT_MESSAGE = "example/assistant_message.txt"
 
 PATH_OUTPUTS = "outputs/out.txt"
+PATH_IMAGES = "images/"
 
 FILENAME_AUDIO = "sounds.wav"
-VIDEO_NAME = "video.mp4"
+FILENAME_VIDEO = "video.mp4"
+FILENAME_VIDEO_EDITED = "video_edited.mp4"
+
 class Main():
 
 
@@ -64,7 +66,7 @@ class Main():
         for infile in infiles:
             w = wave.open(infile, 'rb')
             data.append( [w.getparams(), w.readframes(w.getnframes())] )
-
+            
             #TODO REMOVE JUST FOR TESTING PURPOSES
             name = infile.split("_")[-1].split(".")[0]
             self.list_talk_duration.append((name, self.get_wav_length(infile)))
@@ -87,8 +89,7 @@ if __name__ == "__main__":
     # ---------- Generate Audios ----------
     main = Main()
     #main.generate_audios_from_text(PATH_OUTPUTS, PATH_AUDIOS)
-    main.merge_audios(PATH_AUDIOS, FILENAME_AUDIO)
-    print(main.list_talk_duration)
+    #main.merge_audios(PATH_AUDIOS, FILENAME_AUDIO)
 
     # ---------- Dowload Background Video ----------
     yt_D = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ", "1080p")
@@ -96,7 +97,6 @@ if __name__ == "__main__":
 
     # ---------- Edit Video ----------
     videoEditHelper = VideoEditHelper()
-    #videoEditHelper.cut_video(yt_D.filename, VIDEO_NAME, 0, main.get_wav_length(FILENAME_AUDIO))
-    #videoEditHelper.set_audio(FILENAME_AUDIO, VIDEO_NAME, "final_video.mp4")
-    videoEditHelper.finalize_video("images/",main.list_talk_duration,FILENAME_AUDIO, VIDEO_NAME, "final_video.mp4")
-    
+    #videoEditHelper.cut_video(yt_D.filename, VIDEO_NAME, yt_D.fps, 0, main.get_wav_length(FILENAME_AUDIO))
+    #videoEditHelper.set_audio(FILENAME_AUDIO, VIDEO_NAME)
+    videoEditHelper.finalize_video(PATH_IMAGES, main.list_talk_duration, FILENAME_AUDIO, FILENAME_VIDEO, FILENAME_VIDEO_EDITED, 0, main.get_wav_length(FILENAME_AUDIO))

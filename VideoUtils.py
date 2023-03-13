@@ -22,21 +22,11 @@ class YTDownloader():
             self.filtered_stream.download(filename=self.filename)
 
 class VideoEditHelper():
-
-    def cut_video(self, old_filename, new_filename, start, end):
-        video = VideoFileClip(old_filename).subclip(start, end)
-        video.write_videofile(new_filename)
-
-    def set_audio(self, audio_clip_title, video_clip_title,new_filename):
-        videoclip = VideoFileClip(video_clip_title)
-        audioclip = AudioFileClip(audio_clip_title)
-        
-        new_videoclip = videoclip.set_audio(audioclip)
-        new_videoclip.write_videofile(new_filename)
     
-    def finalize_video(self,images_path, list_talk_duration, audio_clip_title, video_clip_title,new_filename):
-        videoclip = VideoFileClip(video_clip_title)
-        video_width,video_height = (videoclip.w,videoclip.h)
+    def finalize_video(self, images_path, list_talk_duration, audio_clip_title, video_clip_title, new_filename, start, end):
+
+        videoclip = VideoFileClip(video_clip_title).subclip(start, end)
+        video_width,video_height = (videoclip.w, videoclip.h)
         audioclip = AudioFileClip(audio_clip_title)
         new_videoclip = videoclip.set_audio(audioclip)
 
@@ -44,7 +34,7 @@ class VideoEditHelper():
         time_stamp = 0
         for _tuple in list_talk_duration:
             name, time = _tuple
-            image = images_path+name+".png"
+            image = images_path + name + ".png"
             image_width, image_height = imagesize.get(image)
             xpos=0.3
             if name == "Trump":
