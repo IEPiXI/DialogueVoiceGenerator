@@ -33,7 +33,7 @@ class VideoEditHelper():
         final_video_array = [new_videoclip]
         time_stamp = 0
         for _tuple in list_talk_duration:
-            name, time = _tuple
+            name, sentence, time = _tuple
             image = images_path + name + ".png"
             image_width, image_height = imagesize.get(image)
             xpos=0.2
@@ -42,6 +42,8 @@ class VideoEditHelper():
             elif name == "Trump":
                 xpos=0.8
             final_video_array.append(ImageClip(image).set_start(time_stamp).set_duration(time).set_pos(((xpos*video_width)-(image_width/2),video_height-image_height)))
+            #TODO install ImageMagick and find configs_default.py; change line to IMAGEMAGICK_BINARY = os.getenv('IMAGEMAGICK_BINARY', 'C:\\Program Files\\ImageMagick_VERSION\\magick.exe')
+            #final_video_array.append(TextClip(sentence, fontsize=75, color='white').set_start(time_stamp).set_duration(time).set_pos('center'))
             time_stamp += time
         	
         new_videoclip = CompositeVideoClip(final_video_array)

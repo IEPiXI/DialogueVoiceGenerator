@@ -17,7 +17,7 @@ PATH_OUTPUTS = "outputs/out.txt"
 PATH_IMAGES = "images/"
 
 FILENAME_AUDIO = "sounds.wav"
-FILENAME_VIDEO = "video.mp4"
+FILENAME_VIDEO = "RocketLeagueNewMapFreeToUseGameplay.mp4"
 FILENAME_VIDEO_EDITED = "video_edited.mp4"
 
 class Main():
@@ -53,11 +53,15 @@ class Main():
             if not item == '':
                 name, sentence = item.split(":")
                 temp_count = str(count) if count > 9 else str(0) + str(count)
-                filename = temp_count + "_" + name
-                self.elevenlab.generate_audio(path_audios, filename, sentence, name)
-                self.list_talk_duration.append((name, self.get_wav_length(path_audios + filename)))
-                sleep(1)
+                filename = temp_count + "_" + name + ".wav"
+
+                #TODO uncomment 
+                #self.elevenlab.generate_audio(path_audios, filename, sentence, name)
+
+                self.list_talk_duration.append((name, sentence, self.get_wav_length(path_audios + filename)))
+                #sleep(1)
                 count += 1 
+        print(self.list_talk_duration)
 
     def merge_audios(self, path, filename):
         infiles =  sorted([path + f for f in os.listdir(path)])
@@ -66,11 +70,6 @@ class Main():
         for infile in infiles:
             w = wave.open(infile, 'rb')
             data.append( [w.getparams(), w.readframes(w.getnframes())] )
-            
-            #TODO REMOVE JUST FOR TESTING PURPOSES
-            name = infile.split("_")[-1].split(".")[0]
-            self.list_talk_duration.append((name, self.get_wav_length(infile)))
-
             w.close()
             
         output = wave.open(filename, 'wb')
@@ -88,8 +87,8 @@ class Main():
 if __name__ == "__main__":
     # ---------- Generate Audios ----------
     main = Main()
-    #main.generate_audios_from_text(PATH_OUTPUTS, PATH_AUDIOS)
-    #main.merge_audios(PATH_AUDIOS, FILENAME_AUDIO)
+    main.generate_audios_from_text(PATH_OUTPUTS, PATH_AUDIOS)
+    main.merge_audios(PATH_AUDIOS, FILENAME_AUDIO)
 
     # ---------- Dowload Background Video ----------
     yt_D = YTDownloader("https://www.youtube.com/watch?v=OgtuU8t5eIQ", "1080p")
