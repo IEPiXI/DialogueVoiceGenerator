@@ -43,7 +43,7 @@ class VideoEditHelper():
                 xpos=0.8
             final_video_array.append(ImageClip(image).set_start(time_stamp).set_duration(time).set_pos(((xpos*video_width)-(image_width/2),video_height-image_height)))
             #TODO install ImageMagick and find configs_default.py; change line to IMAGEMAGICK_BINARY = os.getenv('IMAGEMAGICK_BINARY', 'C:\\Program Files\\ImageMagick_VERSION\\magick.exe')
-            #final_video_array.append(TextClip(sentence, fontsize=75, color='white').set_start(time_stamp).set_duration(time).set_pos('center'))
+            final_video_array.append(TextClip(sentence, fontsize=75, color='white').set_start(time_stamp).set_duration(time).set_pos('center'))
             time_stamp += time
         	
         new_videoclip = CompositeVideoClip(final_video_array)
